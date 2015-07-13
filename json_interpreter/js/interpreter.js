@@ -42,7 +42,24 @@ refresh = function(){
 				textual_feedback='idk';
 			}
 			$('#textual_feedback').text(textual_feedback);
+			var ctx = $('#testChart').get(0).getContext("2d");
 
+
+var chartData = {
+	labels : ["January","February","March","April","May","June"],
+	datasets : [
+		{
+			fillColor : "rgba(172,194,132,0.4)",
+			strokeColor : "#ACC26D",
+			pointColor : "#fff",
+			pointStrokeColor : "#9DB86D",
+			data : [203,156,99,251,305,247]
+		}
+	]
+}
+
+
+			new Chart(ctx).Line(chartData);
 
 	});
 	return;
