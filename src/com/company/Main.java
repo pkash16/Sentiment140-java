@@ -1,10 +1,9 @@
 package com.company;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.awt.*;
+import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.util.Scanner;
 
@@ -121,10 +120,15 @@ public class Main {
 
         //print result
         System.out.println(response.toString());
-        PrintWriter writer = new PrintWriter("output.json");
+        PrintWriter writer = new PrintWriter("json_interpreter/output.json");
         writer.println(response.toString());
         writer.close();
         System.out.println("Responses saved to output.json");
+
+        //open website
+        Desktop.getDesktop().browse(new File("json_interpreter/index.html").toURI());
+
+
 
     }
 
