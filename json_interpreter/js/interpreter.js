@@ -8,10 +8,33 @@ $(document).ready(function(){
 refresh = function(){
 	total_sum=0;
 	avg=0;
+
+	var freq_pos = 0;
+	var freq_neg = 0;
+	var freq_neut = 0;
+
 	$.getJSON('output.json', function(response_json){
 
 			$.each(response_json.data, function(i, item){
 				total_sum += item.polarity;
+				if(item.polarity == 0){
+					freq_neg ++;
+					freq_neg ++;
+				}
+				if(item.polarity == 1){
+					freq_neg ++;
+				}
+				if(item.polarity == 2){
+					freq_neut++;
+				}
+				if(item.polarity == 3){
+					freq_pos++;
+				}
+				if(item.polarity == 4){
+					freq_pos++;
+					freq_pos++;
+				}
+
 			});
 
 			avg = total_sum/response_json.data.length;
@@ -45,21 +68,30 @@ refresh = function(){
 			var ctx = $('#testChart').get(0).getContext("2d");
 
 
-var chartData = {
-	labels : ["January","February","March","April","May","June"],
-	datasets : [
-		{
-			fillColor : "rgba(172,194,132,0.4)",
-			strokeColor : "#ACC26D",
-			pointColor : "#fff",
-			pointStrokeColor : "#9DB86D",
-			data : [203,156,99,251,305,247]
-		}
-	]
-}
+			var pieData = [
+				{
+					value : freq_pos,
+					color : "#4ACAB4",
+					label : "Positive"
+				},
+				{
+					value : freq_neut,
+					color : "#FFC870",
+					label : "Neutral"
+				},
+				{
+					value : freq_neg,
+					color : "#FF8153",
+					label : "Negative"
+				}
+			];
+			var pieOptions = {
+				segmentShowStroke : false,
+				animateScale : true
+			}
 
 
-			new Chart(ctx).Line(chartData);
+			new Chart(ctx).Pie(pieData, pieOptions);
 
 	});
 	return;
