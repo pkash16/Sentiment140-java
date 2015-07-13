@@ -3,6 +3,7 @@ package com.company;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
@@ -13,7 +14,9 @@ import twitter4j.*;
 
 public class Main {
 
-    private final String USER_AGENT = "Mozilla/5.0";
+    public static final String USER_AGENT = "Mozilla/5.0";
+    public static JSONArray data;
+
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -27,25 +30,27 @@ public class Main {
         // The factory instance is re-useable and thread safe.
         Twitter twitter = TwitterFactory.getSingleton();
         Query query = new Query(query_string);
+
+        data = new JSONArray();
+
         try {
             QueryResult result = twitter.search(query);
             for (Status status : result.getTweets()) {
-                System.out.println(status.getText());
+                data.put(new JSONObject().put("text", status.getText()));
             }
         }catch(Exception e){
             System.out.println(e.toString());
         }
 
-	    Main http = new Main();
         try{
-            http.sendPost();
+           sendPost();
         }catch(Exception e){
             System.out.println(e.toString());
         }
 
     }
 
-    private void sendGet() throws Exception {
+    public static void sendGet() throws Exception {
 
         String url = "http://www.sentiment140.com/api/classify?text=new+moon+is+awesome&query=new+moon";
 
@@ -77,7 +82,7 @@ public class Main {
 
     }
 
-    private void sendPost() throws Exception {
+    public static void sendPost() throws Exception {
 
         String url = "http://www.sentiment140.com/api/bulkClassifyJson";
         URL obj = new URL(url);
@@ -87,10 +92,7 @@ public class Main {
         con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 
         JSONObject json = new JSONObject();
-        JSONArray array = new JSONArray();
-        array.put(new JSONObject().put("text", "I love titanic."));
-        array.put(new JSONObject().put("text", "I love that i hate this"));
-        json.put("data",array);
+        json.put("data", data);
 
         String urlParameters = json.toString();
 
@@ -119,6 +121,10 @@ public class Main {
 
         //print result
         System.out.println(response.toString());
+        PrintWriter writer = new PrintWriter("output.json");
+        writer.println(response.toString());
+        writer.close();
+        System.out.println("Responses saved to output.json");
 
     }
 
