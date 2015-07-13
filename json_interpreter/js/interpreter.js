@@ -62,7 +62,7 @@ refresh = function(){
 				textual_feedback='very positive';
 			}
 			else{
-				textual_feedback='idk';
+				textual_feedback='not sure';
 			}
 			$('#textual_feedback').text(textual_feedback);
 			var ctx = $('#testChart').get(0).getContext("2d");
@@ -91,7 +91,8 @@ refresh = function(){
 			}
 
 
-			new Chart(ctx).Pie(pieData, pieOptions);
+			var myChart = new Chart(ctx).Pie(pieData, pieOptions);
+			$('#legend').html(myChart.generateLegend());
 
 	});
 	return;
