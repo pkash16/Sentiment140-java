@@ -71,22 +71,24 @@ refresh = function(){
 			var pieData = [
 				{
 					value : freq_pos,
-					color : "#4ACAB4",
+					color : "#46BFBD",
+					highlight: "#5AD3D1",
 					label : "Positive"
 				},
 				{
 					value : freq_neut,
-					color : "#FFC870",
+					color: "#FDB45C",
+					highlight: "#FFC870",
 					label : "Neutral"
 				},
 				{
 					value : freq_neg,
-					color : "#FF8153",
+					highlight: "#F7464A",
+					color : "#FF5A5E",
 					label : "Negative"
 				}
 			];
 			var pieOptions = {
-				segmentShowStroke : false,
 				animateScale : true
 			}
 
