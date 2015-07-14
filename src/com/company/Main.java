@@ -3,9 +3,9 @@ package com.company;
 import java.awt.*;
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.URI;
 import java.net.URL;
 import java.util.Scanner;
+
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,8 +16,8 @@ public class Main {
     public static final String USER_AGENT = "Mozilla/5.0";
     public static JSONArray data;
 
-
     public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);
 
         //output
@@ -34,13 +34,22 @@ public class Main {
         data = new JSONArray();
 
         try {
-            QueryResult result = twitter.search(query);
-            for (Status status : result.getTweets()) {
-                data.put(new JSONObject().put("text", status.getText()));
+            for(int i = 0; i < 3; i ++){
+                QueryResult result = twitter.search(query);
+                for (Status status : result.getTweets()) {
+                    data.put(new JSONObject().put("text", status.getText()));
+                }
+                if(result.hasNext()){
+                    query = result.nextQuery();
+                }else{
+                    break;
+                }
             }
+
         }catch(Exception e){
             System.out.println(e.toString());
         }
+
 
         try{
            sendPost();
@@ -52,7 +61,7 @@ public class Main {
 
     public static void sendPost() throws Exception {
 
-        String url = "http://www.sentiment140.com/api/bulkClassifyJson?appid=p.kash16@gmail.com";
+        String url = "http://www.sentiment140.com/api/bulkClassifyJson?appid=pkash16@gmail.com";
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("POST");
@@ -93,7 +102,7 @@ public class Main {
         writer.println(response.toString());
         writer.close();
         System.out.println("Responses saved to output.json");
-
+        System.out.println("attempting to open file.. if failed go to json_interpreter/index.html to view");
         //open website
         Desktop.getDesktop().browse(new File("json_interpreter/index.html").toURI());
 

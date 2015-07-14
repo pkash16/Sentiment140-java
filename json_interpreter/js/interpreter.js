@@ -94,7 +94,6 @@ refresh = function(){
 
 
 			var myChart = new Chart(ctx).Pie(pieData, pieOptions);
-			$('#legend').html(myChart.generateLegend());
 
 	});
 	return;
