@@ -5,6 +5,8 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 import org.json.JSONArray;
@@ -34,10 +36,11 @@ public class Main {
         data = new JSONArray();
 
         try {
-            for(int i = 0; i < 3; i ++){
+            for(int i = 0; i < 5; i ++){
                 QueryResult result = twitter.search(query);
                 for (Status status : result.getTweets()) {
-                    data.put(new JSONObject().put("text", status.getText()));
+
+                    data.put(new JSONObject().put("text", removeUrl(status.getText())));
                 }
                 if(result.hasNext()){
                     query = result.nextQuery();
@@ -108,6 +111,21 @@ public class Main {
 
 
 
+    }
+
+
+
+    private static String removeUrl(String commentstr)
+    {
+        String urlPattern = "((https?|ftp|gopher|telnet|file|Unsure|http):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)";
+        Pattern p = Pattern.compile(urlPattern,Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(commentstr);
+        int i = 0;
+        while (m.find()) {
+            commentstr = commentstr.replaceAll(m.group(i),"").trim();
+            i++;
+        }
+        return commentstr;
     }
 
 
