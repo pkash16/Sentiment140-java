@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import twitter4j.*;
+import twitter4j.conf.ConfigurationBuilder;
 
 public class Main {
 
@@ -29,7 +30,15 @@ public class Main {
 
 
         // The factory instance is re-useable and thread safe.
-        Twitter twitter = TwitterFactory.getSingleton();
+        ConfigurationBuilder cb = new ConfigurationBuilder();
+        cb.setDebugEnabled(true)
+                .setOAuthConsumerKey("blTWPrEOVm4wivuIMDuZDWJ8Z")
+                .setOAuthConsumerSecret("KPhtWLKETn2VgYHUuVPS4VlsMFwLjViZv16UExxlA0JdTka8ep")
+                .setOAuthAccessToken("1737850004-KawPRcYGZFVTw1hj5UPQt4TY6YXxUVTyEw3dTfs")
+                .setOAuthAccessTokenSecret("QOStdXy5qDNNkNgs6p7RyAZSNJhZ4TWFsVgWHOOlRtqK2");
+
+
+        Twitter twitter = new TwitterFactory(cb.build()).getInstance();
         Query query = new Query(query_string).lang("en");
         query.setCount(100);
 
